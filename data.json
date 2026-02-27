@@ -1,0 +1,502 @@
+[
+    {
+  "paper_id": "xu2025_mega_rag_public_health",
+  "pdf_path": "./pdfs/fpubh-13-1635381.pdf",
+  "metadata": {
+    "title": "MEGA-RAG: a retrieval-augmented generation framework with multi-evidence guided answer refinement for mitigating hallucinations of LLMs in public health",
+    "authors": [
+      {
+        "name": "Shan Xu",
+        "affiliation": "Fudan University & China Academy of Information and Communications Technology"
+      },
+      {
+        "name": "Zhaokun Yan",
+        "affiliation": "China Academy of Information and Communications Technology"
+      },
+      {
+        "name": "Chengxiao Dai",
+        "affiliation": "University of Sydney"
+      },
+      {
+        "name": "Fan Wu",
+        "affiliation": "Fudan University"
+      }
+    ],
+    "year": 2025,
+    "venue": "Frontiers in Public Health",
+    "doi": "10.3389/fpubh.2025.1635381",
+    "url": "https://doi.org/10.3389/fpubh.2025.1635381",
+    "keywords": [
+      "public health",
+      "LLM hallucinations",
+      "retrieval-augmented generation",
+      "knowledge graph",
+      "medical question answering"
+    ],
+    "citations_count": 2
+  },
+  "problem": {
+    "domain": "Public Health / Biomedical Question Answering",
+    "problem_statement": "Large language models produce hallucinated and factually incorrect outputs in public health applications, potentially misleading clinical and policy decisions.",
+    "motivation": "Public health applications require high factual reliability, interpretability, and evidence grounding, especially in high-stakes scenarios.",
+    "research_gap": "Existing RAG and domain fine-tuned models partially mitigate hallucinations but lack multi-source evidence integration, semantic-evidential alignment evaluation, and discrepancy-aware refinement mechanisms tailored to public health."
+  },
+  "methodology": {
+    "type": "Multi-stage Retrieval-Augmented Generation Framework",
+    "model_name": "MEGA-RAG",
+    "architecture": "Four-stage pipeline: Multi-Source Evidence Retrieval (MSER) → Diverse Prompted Answer Generation (DPAG) → Semantic-Evidential Alignment Evaluation (SEAE) → Discrepancy-Identified Self-Clarification (DISC) → Final Answer Fusion",
+    "algorithms": [
+      "FAISS dense retrieval",
+      "BM25 lexical retrieval",
+      "Knowledge graph triple retrieval",
+      "Cross-encoder re-ranking",
+      "BERTScore-based semantic similarity",
+      "Cosine similarity",
+      "Self-consistency sampling",
+      "K-means clustering"
+    ],
+    "mathematical_formulation": "Nearest-neighbor search for dense retrieval, BM25 scoring function, semantic divergence via 1 - BERTScore, evidence coverage via cosine similarity, weighted SEAE scoring, iterative refinement with threshold-based stopping.",
+    "workflow_summary": "The system retrieves heterogeneous biomedical evidence (PubMed, WHO IRIS, CPubMed-KG), generates multiple candidate answers via temperature-based sampling, evaluates semantic-evidential consistency, triggers clarification and secondary retrieval when discrepancies exceed threshold (0.5), and fuses consistent answers using voting and clustering."
+  },
+  "data": {
+    "datasets_used": [
+      {
+        "name": "HealthQuestDB",
+        "type": "curated benchmark dataset",
+        "size": "890 QA pairs"
+      }
+    ],
+    "preprocessing": "QA pairs curated from PubMed and WHO IRIS; 20% double-annotated; Cohen's kappa = 1.0; separation between retrieval corpus and evaluation QA answers to avoid leakage."
+  },
+  "experiments": {
+    "evaluation_metrics": [
+      "Accuracy",
+      "Precision",
+      "Recall",
+      "F1 Score"
+    ],
+    "baselines_compared": [
+      "PubMedBERT",
+      "PubMedGPT",
+      "Standalone LLM (LLaMA3-70B)",
+      "LLM + Standard RAG"
+    ],
+    "results_summary": "MEGA-RAG achieves the best overall performance across all metrics and reduces hallucination rates by over 40% compared to baselines. It improves precision-recall balance and lowers false positives relative to standalone LLM and standard RAG.",
+    "best_results": [
+      {
+        "metric": "Accuracy",
+        "value": 0.7913,
+        "comparison_note": "Highest among all compared models"
+      },
+      {
+        "metric": "Precision",
+        "value": 0.7541,
+        "comparison_note": "Improved over LLM and LLM+RAG"
+      },
+      {
+        "metric": "Recall",
+        "value": 0.8304,
+        "comparison_note": "Maintains high recall while reducing false positives"
+      },
+      {
+        "metric": "F1 Score",
+        "value": 0.7904,
+        "comparison_note": "Best overall F1 performance"
+      }
+    ]
+  },
+  "contributions": [
+    "Introduces MEGA-RAG, a multi-evidence guided RAG framework tailored for public health.",
+    "Integrates dense, sparse, and knowledge-graph retrieval into unified pipeline.",
+    "Proposes Semantic-Evidential Alignment Evaluation (SEAE) for consistency scoring.",
+    "Introduces DISC module for discrepancy-aware self-clarification and iterative refinement.",
+    "Demonstrates significant hallucination reduction (>40%) on HealthQuestDB benchmark."
+  ],
+  "limitations": [
+    "Multi-stage design introduces additional computational overhead.",
+    "Efficiency benchmarks not deeply evaluated.",
+    "Currently optimized for binary (yes/no) decisions.",
+    "Scalability and resource-constrained deployment require further optimization."
+  ],
+  "future_work": [
+    "Evaluation on larger benchmarks (MedQA, PubMedQA).",
+    "Dynamic ingestion of updated health guidelines.",
+    "Multilingual and cross-regional deployment.",
+    "Clinician-in-the-loop feedback integration.",
+    "Lightweight transformer variants for resource-constrained environments."
+  ],
+  "outputs": {
+    "code_available": false,
+    "code_url": null,
+    "model_available": false,
+    "demo_available": false
+  },
+  "complexity": {
+    "training_time": "Not specified; focus on inference-time multi-stage retrieval and refinement.",
+    "inference_time": "Higher than standard RAG due to multi-stage retrieval and iterative refinement (typically seconds).",
+    "computational_cost": "Moderate to high due to multiple LLM calls and retrieval modules."
+  },
+  "reproducibility": {
+    "clear_methodology": true,
+    "public_dataset": "HealthQuestDB described but not clearly released externally.",
+    "hyperparameters_listed": "Partially (e.g., SEAE threshold = 0.5, Tmax = 5 iterations)."
+  },
+  "your_analysis": {
+    "relevance_score": 9,
+    "strengths": [
+      "Strong modular design with interpretability.",
+      "Clear hallucination mitigation strategy.",
+      "Well-balanced precision-recall performance.",
+      "Explicit iterative refinement mechanism."
+    ],
+    "weaknesses": [
+      "Binary-focused answer format may limit complex reasoning tasks.",
+      "Computationally expensive.",
+      "Evaluation limited to one curated dataset."
+    ],
+    "implementation_difficulty": "high",
+    "can_we_extend_it": "Yes. Can be extended to multi-label decision tasks, non-binary QA, and dynamic guideline ingestion for real-time systems."
+  },
+  "notes": "Framework particularly suitable for high-stakes QA scenarios where traceability and factual alignment are critical.",
+  "added_by": "",
+  "date_added": ""
+},
+{
+  "paper_id": "wang2024_jmlr_joint_medical_llm_retrieval",
+  "pdf_path": "./pdfs/2402.17887v4.pdf",
+  "metadata": {
+    "title": "JMLR: Joint Medical LLM and Retrieval Training for Enhancing Reasoning and Professional Question Answering Capability",
+    "authors": [
+      {
+        "name": "Junda Wang",
+        "affiliation": "University of Massachusetts Amherst"
+      },
+      {
+        "name": "Zhichao Yang",
+        "affiliation": "University of Massachusetts Amherst"
+      },
+      {
+        "name": "Zonghai Yao",
+        "affiliation": "University of Massachusetts Amherst"
+      },
+      {
+        "name": "Hong Yu",
+        "affiliation": "University of Massachusetts Amherst & UMass Medical School"
+      }
+    ],
+    "year": 2024,
+    "venue": "arXiv",
+    "doi": null,
+    "url": "https://arxiv.org/abs/2402.17887",
+    "keywords": [
+      "medical LLM",
+      "joint training",
+      "retrieval-augmented generation",
+      "hallucination reduction",
+      "medical QA",
+      "LLM-Rank loss"
+    ],
+    "citations_count": 52
+  },
+  "problem": {
+    "domain": "Medical Question Answering",
+    "problem_statement": "Traditional medical LLMs hallucinate and RAG systems train retrievers separately from LLMs, leading to suboptimal retrieval alignment and limited reasoning improvement.",
+    "motivation": "Medical QA requires high factual accuracy, strong reasoning chains, and reduced hallucinations due to clinical risk.",
+    "research_gap": "Existing RAG approaches freeze retrievers or train them separately from LLMs, preventing alignment between retrieval relevance and answer quality."
+  },
+  "methodology": {
+    "type": "Joint Retrieval-LLM Training Framework",
+    "model_name": "JMLR",
+    "architecture": "ColBERT retriever + Llama-based LLM with joint gradient optimization via LLM-Rank loss",
+    "algorithms": [
+      "ColBERT dense retrieval",
+      "Shifted Sparse Attention (S2-Attn)",
+      "LLM-Rank loss",
+      "Joint gradient descent over retriever and LLM",
+      "Weighted document sampling",
+      "Cross-entropy loss for QA"
+    ],
+    "mathematical_formulation": "Joint optimization over LLM parameters (θ) and retriever parameters (ϕ) using combined answer loss and rank loss; Lrank aligns retrieval ranking with LLM loss reduction.",
+    "workflow_summary": "Retriever selects top-k documents dynamically; documents are injected into LLM input during fine-tuning; LLM loss improvement is used to update retriever via LLM-Rank loss; both modules are optimized simultaneously."
+  },
+  "data": {
+    "datasets_used": [
+      {
+        "name": "MedQA (USMLE)",
+        "type": "multiple-choice QA",
+        "size": "official USMLE sample questions"
+      },
+      {
+        "name": "Amboss",
+        "type": "medical question bank",
+        "size": "Step1/2/3-type questions"
+      },
+      {
+        "name": "MedMCQA",
+        "type": "multiple-choice medical entrance exam dataset",
+        "size": "194k questions"
+      },
+      {
+        "name": "MMLU-Medical",
+        "type": "subset of MMLU",
+        "size": "9 medical-related subjects"
+      }
+    ],
+    "preprocessing": "Supervised fine-tuning per dataset; retriever trained without manual document-query labeling; dynamic weighted document sampling."
+  },
+  "experiments": {
+    "evaluation_metrics": [
+      "Accuracy",
+      "UMLS-F1",
+      "GPT-4 Likert reasoning score",
+      "Human expert preference"
+    ],
+    "baselines_compared": [
+      "Meditron-70B",
+      "RAG-13B",
+      "GPT-3.5",
+      "GPT-4",
+      "Claude3",
+      "Llama-2"
+    ],
+    "results_summary": "JMLR-13B achieves 70.5% average accuracy across benchmarks, outperforming Meditron-70B (68.9%) and RAG-13B (67.7%). JMLR also improves rationale quality and reduces hallucinations.",
+    "best_results": [
+      {
+        "metric": "Average Accuracy",
+        "value": 70.5,
+        "comparison_note": "Highest among open-source models"
+      },
+      {
+        "metric": "MedQA Accuracy",
+        "value": 62.5,
+        "comparison_note": "Outperforms RAG-13B (59.9%)"
+      },
+      {
+        "metric": "Amboss Accuracy",
+        "value": 81.2,
+        "comparison_note": "Higher than Meditron-70B"
+      }
+    ]
+  },
+  "contributions": [
+    "Introduces joint training of retriever and LLM (JMLR).",
+    "Proposes LLM-Rank loss aligning retrieval usefulness with LLM loss.",
+    "Outperforms 70B medical LLM with 13B model.",
+    "Reduces training time drastically (148 GPU hours vs 42630 GPU hours).",
+    "Improves reasoning quality validated by GPT-4 and medical experts."
+  ],
+  "limitations": [
+    "Evaluated only on medical domain.",
+    "Limited human expert evaluation sample size.",
+    "Potential dataset bias from geographic sources.",
+    "Privacy and fairness concerns remain."
+  ],
+  "future_work": [
+    "Generalize joint retrieval training to other domains.",
+    "Increase number of expert evaluators.",
+    "Mitigate bias via more diverse datasets.",
+    "Improve ethical safeguards for clinical deployment."
+  ],
+  "outputs": {
+    "code_available": true,
+    "code_url": "https://github.com/believewhat/JMLR-Joint-Medical-LLM-and-Retrieval-Training",
+    "model_available": true,
+    "demo_available": false
+  },
+  "complexity": {
+    "training_time": "JMLR-13B: 148 GPU hours; JMLR-7B: ~100 GPU hours",
+    "inference_time": "Comparable to RAG models; depends on retrieval top-k",
+    "computational_cost": "Moderate; significantly lower than full domain pretraining"
+  },
+  "reproducibility": {
+    "clear_methodology": true,
+    "public_dataset": true,
+    "hyperparameters_listed": true
+  },
+  "your_analysis": {
+    "relevance_score": 9,
+    "strengths": [
+      "Elegant joint optimization design.",
+      "LLM-Rank loss is conceptually strong.",
+      "Resource-efficient compared to full domain pretraining.",
+      "Strong empirical evaluation."
+    ],
+    "weaknesses": [
+      "Limited to multiple-choice QA.",
+      "Heavy reliance on retrieval corpus quality.",
+      "Unclear scalability to very large corpora."
+    ],
+    "implementation_difficulty": "very high",
+    "can_we_extend_it": "Yes. Can be generalized to non-medical domains and generative long-form reasoning tasks."
+  },
+  "notes": "JMLR is fundamentally different from MEGA-RAG: it performs joint optimization instead of post-hoc refinement.",
+  "added_by": "",
+  "date_added": ""
+},
+{
+  "paper_id": "edge2025_graphrag_global_qfs",
+  "pdf_path": "./pdfs/2404.16130v2.pdf",
+  "metadata": {
+    "title": "From Local to Global: A GraphRAG Approach to Query-Focused Summarization",
+    "authors": [
+      {"name": "Darren Edge", "affiliation": "Microsoft Research"},
+      {"name": "Ha Trinh", "affiliation": "Microsoft Research"},
+      {"name": "Newman Cheng", "affiliation": "Microsoft Strategic Missions and Technologies"},
+      {"name": "Joshua Bradley", "affiliation": "Microsoft Strategic Missions and Technologies"},
+      {"name": "Alex Chao", "affiliation": "Microsoft Office of the CTO"},
+      {"name": "Apurva Mody", "affiliation": "Microsoft Office of the CTO"},
+      {"name": "Steven Truitt", "affiliation": "Microsoft Strategic Missions and Technologies"},
+      {"name": "Dasha Metropolitansky", "affiliation": "Microsoft Research"},
+      {"name": "Robert Osazuwa Ness", "affiliation": "Microsoft Research"},
+      {"name": "Jonathan Larson", "affiliation": "Microsoft Research"}
+    ],
+    "year": 2025,
+    "venue": "arXiv (Under Review)",
+    "doi": null,
+    "url": "https://arxiv.org/abs/2404.16130",
+    "keywords": [
+      "GraphRAG",
+      "Query-Focused Summarization",
+      "Knowledge Graph",
+      "Global Sensemaking",
+      "LLM-as-a-judge",
+      "Community Detection"
+    ],
+    "citations_count": 956
+  },
+
+  "problem": {
+    "domain": "Retrieval-Augmented Generation / Large-Scale Summarization",
+    "problem_statement": "Vector RAG fails on global sensemaking questions that require understanding the entire corpus rather than retrieving localized facts.",
+    "motivation": "Users frequently ask high-level, corpus-wide questions such as identifying themes, trends, or global insights that cannot be answered via top-k retrieval.",
+    "research_gap": "Existing RAG methods focus on semantic similarity retrieval and cannot support global query-focused summarization at million-token scale."
+  },
+
+  "methodology": {
+    "type": "Graph-Based Retrieval-Augmented Generation",
+    "model_name": "GraphRAG",
+    "architecture": "LLM-driven knowledge graph construction → Hierarchical community detection (Leiden) → Community summaries → Map-Reduce query answering",
+    "algorithms": [
+      "LLM-based entity extraction",
+      "LLM-based relationship extraction",
+      "Knowledge graph construction",
+      "Leiden community detection",
+      "Hierarchical graph partitioning",
+      "Map-reduce summarization",
+      "LLM-as-a-judge evaluation",
+      "Claim-based evaluation (Claimify)"
+    ],
+    "mathematical_formulation": "Graph partitioning via modularity-based Leiden algorithm; clustering using agglomerative clustering with distance metric 1 - ROUGE-L for diversity evaluation.",
+    "workflow_summary": "GraphRAG builds an entity knowledge graph from documents, detects hierarchical communities, generates summaries for each community, then answers global queries using map-reduce summarization over community summaries."
+  },
+
+  "data": {
+    "datasets_used": [
+      {
+        "name": "Behind the Tech Podcast Transcripts",
+        "type": "Podcast corpus",
+        "size": "~1M tokens (1669 chunks)"
+      },
+      {
+        "name": "News Articles Benchmark",
+        "type": "Multi-category news corpus",
+        "size": "~1.7M tokens (3197 chunks)"
+      }
+    ],
+    "preprocessing": "Documents split into 600-token chunks with 100-token overlaps; LLM-based entity and claim extraction."
+  },
+
+  "experiments": {
+    "evaluation_metrics": [
+      "Comprehensiveness",
+      "Diversity",
+      "Empowerment",
+      "Directness",
+      "Claim count (objective comprehensiveness)",
+      "Claim cluster count (objective diversity)"
+    ],
+    "baselines_compared": [
+      "Vector RAG (Semantic Search)",
+      "Text Summarization (Map-reduce over raw text)"
+    ],
+    "results_summary": "GraphRAG significantly outperforms vector RAG on comprehensiveness and diversity across datasets. Root-level communities achieve high efficiency with >97% token reduction compared to text summarization.",
+    "best_results": [
+      {
+        "metric": "Comprehensiveness Win Rate",
+        "value": "72–83%",
+        "comparison_note": "Against vector RAG across datasets"
+      },
+      {
+        "metric": "Diversity Win Rate",
+        "value": "62–82%",
+        "comparison_note": "Against vector RAG"
+      },
+      {
+        "metric": "Token Efficiency (C0)",
+        "value": ">97% token reduction",
+        "comparison_note": "Compared to text summarization baseline"
+      }
+    ]
+  },
+
+  "contributions": [
+    "Introduces GraphRAG for global corpus-level question answering.",
+    "Combines knowledge graph indexing with hierarchical summarization.",
+    "Demonstrates failure mode of vector RAG for global sensemaking.",
+    "Proposes adaptive global question generation using personas.",
+    "Introduces claim-based evaluation for comprehensiveness and diversity."
+  ],
+
+  "limitations": [
+    "Evaluated on only two ~1M-token datasets.",
+    "Evaluation relies on LLM-as-a-judge (subjective component).",
+    "High indexing cost (281 minutes for 1M tokens).",
+    "Entity matching uses exact string matching."
+  ],
+
+  "future_work": [
+    "Hybrid embedding + graph retrieval.",
+    "Dynamic drill-down and roll-up mechanisms.",
+    "Fabrication/hallucination benchmarking (SelfCheckGPT).",
+    "Domain adaptation to more varied corpora."
+  ],
+
+  "outputs": {
+    "code_available": true,
+    "code_url": "https://github.com/microsoft/graphrag",
+    "model_available": false,
+    "demo_available": false
+  },
+
+  "complexity": {
+    "training_time": "Graph indexing: ~281 minutes for 1M tokens using GPT-4-turbo.",
+    "inference_time": "Depends on community level; C0 is highly efficient.",
+    "computational_cost": "High indexing cost; lower per-query cost once index is built."
+  },
+
+  "reproducibility": {
+    "clear_methodology": true,
+    "public_dataset": true,
+    "hyperparameters_listed": true
+  },
+
+  "your_analysis": {
+    "relevance_score": 10,
+    "strengths": [
+      "Conceptually elegant shift from local retrieval to global reasoning.",
+      "Scalable hierarchical summarization.",
+      "Strong empirical validation.",
+      "Efficient root-level querying."
+    ],
+    "weaknesses": [
+      "Heavy preprocessing cost.",
+      "Depends strongly on extraction quality.",
+      "No comparison against joint-training RAG methods (like JMLR)."
+    ],
+    "implementation_difficulty": "very high",
+    "can_we_extend_it": "Yes. Can integrate with joint retrieval training (JMLR-style) or combine with hallucination scoring modules."
+  },
+
+  "notes": "GraphRAG represents a structural shift from similarity-based retrieval to topology-aware global summarization."
+}
+]

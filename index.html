@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PFE · Recent Papers</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ═══════════════════════════════ HEADER ═══════════════════════════════ -->
+  <header class="site-header">
+    <div class="header-inner container">
+      <div class="header-brand">
+        <span class="brand-icon">📄</span>
+        <div>
+          <h1 class="brand-title" id="siteTitle">PFE · Recent Papers</h1>
+          <p class="brand-subtitle" id="siteSubtitle">Curated research for our project</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="btn-icon" id="helpBtn" aria-label="How to add a paper" title="How to add a paper">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </button>
+        <button class="btn-icon" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark/light mode">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════ STATS BAR ════════════════════════════ -->
+  <div class="stats-bar container" id="statsBar">
+    <div class="stat-item">
+      <span class="stat-value" id="statTotal">0</span>
+      <span class="stat-label">Papers</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <span class="stat-value" id="statYears">—</span>
+      <span class="stat-label">Years</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <span class="stat-value" id="statDomains">0</span>
+      <span class="stat-label">Domains</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <span class="stat-value" id="statAvgScore">—</span>
+      <span class="stat-label">Avg. Score</span>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════ CONTROLS ════════════════════════════════ -->
+  <div class="controls-wrapper">
+    <div class="controls container">
+      <div class="search-box">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="searchInput" placeholder="Search titles, authors, keywords, domain…" autocomplete="off" />
+        <button class="search-clear hidden" id="searchClear" aria-label="Clear search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="filters-row">
+        <select id="filterYear" class="filter-select" aria-label="Filter by year">
+          <option value="">All Years</option>
+        </select>
+        <select id="filterDomain" class="filter-select" aria-label="Filter by domain">
+          <option value="">All Domains</option>
+        </select>
+        <select id="filterVenue" class="filter-select" aria-label="Filter by venue">
+          <option value="">All Venues</option>
+        </select>
+        <select id="filterScore" class="filter-select" aria-label="Minimum relevance score">
+          <option value="">Any Score</option>
+          <option value="9">Score ≥ 9</option>
+          <option value="7">Score ≥ 7</option>
+          <option value="5">Score ≥ 5</option>
+        </select>
+        <select id="sortBy" class="filter-select" aria-label="Sort by">
+          <option value="year-desc">Year: Newest</option>
+          <option value="year-asc">Year: Oldest</option>
+          <option value="score-desc">Relevance: High → Low</option>
+          <option value="title-asc">Title: A → Z</option>
+        </select>
+      </div>
+      <!-- Active filter chips -->
+      <div class="active-filters" id="activeFilters" role="list"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════ MAIN CONTENT ═════════════════════════════ -->
+  <main class="container main-content" id="mainContent">
+    <!-- Error banner (hidden by default) -->
+    <div class="error-banner hidden" id="errorBanner" role="alert">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <div>
+        <strong>Could not load data.json</strong>
+        <p>Make sure you're running this through a local server:<br>
+        <code>python -m http.server 8080</code> → <a href="http://localhost:8080" target="_blank">http://localhost:8080</a></p>
+      </div>
+    </div>
+
+    <!-- Loading state -->
+    <div class="loading-state" id="loadingState" aria-live="polite">
+      <div class="spinner"></div>
+      <p>Loading papers…</p>
+    </div>
+
+    <!-- Empty state (no results) -->
+    <div class="empty-state hidden" id="emptyState">
+      <div class="empty-icon">🔍</div>
+      <h3>No papers found</h3>
+      <p>Try adjusting your search or filters.</p>
+      <button class="btn-secondary" id="resetFiltersBtn">Clear all filters</button>
+    </div>
+
+    <!-- Papers list: year groups injected here -->
+    <div id="papersList"></div>
+  </main>
+
+  <!-- ═══════════════════════════ DETAIL PANEL ═════════════════════════════ -->
+  <div class="panel-overlay" id="panelOverlay" aria-hidden="true"></div>
+  <aside class="detail-panel" id="detailPanel" role="dialog" aria-modal="true" aria-label="Paper details" aria-hidden="true">
+    <div class="panel-header">
+      <button class="btn-icon panel-close" id="panelClose" aria-label="Close panel">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <div class="panel-title-block">
+        <h2 class="panel-title" id="panelTitle"></h2>
+        <p class="panel-byline" id="panelByline"></p>
+      </div>
+      <div class="panel-badges" id="panelBadges"></div>
+    </div>
+    <nav class="panel-tabs" role="tablist" aria-label="Paper detail sections">
+      <button role="tab" class="tab-btn active" data-tab="overview" aria-selected="true">Overview</button>
+      <button role="tab" class="tab-btn" data-tab="experiments" aria-selected="false">Experiments</button>
+      <button role="tab" class="tab-btn" data-tab="contributions" aria-selected="false">Contributions</button>
+      <button role="tab" class="tab-btn" data-tab="analysis" aria-selected="false">Analysis</button>
+      <button role="tab" class="tab-btn" data-tab="metadata" aria-selected="false">Metadata</button>
+    </nav>
+    <div class="panel-body" id="panelBody"></div>
+  </aside>
+
+  <!-- ═══════════════════════════ HELP MODAL ═══════════════════════════════ -->
+  <div class="modal-overlay hidden" id="helpOverlay" role="dialog" aria-modal="true" aria-label="Help">
+    <div class="modal-box">
+      <button class="btn-icon modal-close" id="helpClose" aria-label="Close help">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <h3>How to add a paper</h3>
+      <ol>
+        <li>Open <code>data.json</code> in any text editor.</li>
+        <li>Copy an existing entry and update all fields for your new paper.</li>
+        <li>Make sure <code>paper_id</code> is unique (e.g. <code>authorYYYY_short_title</code>).</li>
+        <li>Save the file and refresh this page — it will appear automatically.</li>
+      </ol>
+      <p class="help-required">Required fields: <code>paper_id</code>, <code>metadata.title</code>. All others are optional.</p>
+      <p>Place the PDF in the <code>pdfs/</code> folder and set <code>pdf_path</code> accordingly.</p>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
