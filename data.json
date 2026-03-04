@@ -498,5 +498,138 @@
   },
 
   "notes": "GraphRAG represents a structural shift from similarity-based retrieval to topology-aware global summarization."
+},
+{
+  "paper_id": "miao2024_rag_nephrology",
+  "pdf_path": "./pdfs/medicina-06-00445.pdf",
+  "metadata": {
+    "title": "Integrating Retrieval-Augmented Generation with Large Language Models in Nephrology: Advancing Practical Applications",
+    "authors": [
+      {"name": "Jing Miao", "affiliation": "Mayo Clinic"},
+      {"name": "Charat Thongprayoon", "affiliation": "Mayo Clinic"},
+      {"name": "Supawadee Suppadungsuk", "affiliation": "Mayo Clinic / Mahidol University"},
+      {"name": "Oscar A. Garcia Valencia", "affiliation": "Mayo Clinic"},
+      {"name": "Wisit Cheungpasitporn", "affiliation": "Mayo Clinic"}
+    ],
+    "year": 2024,
+    "venue": "Medicina",
+    "doi": "10.3390/medicina60030445",
+    "url": "https://doi.org/10.3390/medicina60030445",
+    "keywords": [
+      "Retrieval-Augmented Generation",
+      "Large Language Models",
+      "Nephrology",
+      "Clinical Decision Support",
+      "Medical AI"
+    ],
+    "citations_count": 121
+  },
+
+  "problem": {
+    "domain": "AI in Healthcare / RAG Systems",
+    "problem_statement": "Large language models used in healthcare often produce hallucinations and unreliable outputs, which can be dangerous in clinical decision-making.",
+    "motivation": "Healthcare requires highly accurate and up-to-date knowledge, while standard LLMs rely only on training data and may generate incorrect or outdated medical information.",
+    "research_gap": "There is a need for systems that combine LLM reasoning with reliable external medical knowledge sources."
+  },
+
+  "methodology": {
+    "type": "Review + Conceptual System Design",
+    "model_name": "RAG-enhanced GPT-4 system for nephrology",
+    "architecture": "External medical knowledge base → Retrieval system → GPT-4 generation using retrieved documents",
+    "algorithms": [
+      "Retrieval-Augmented Generation (RAG)",
+      "Prompt engineering",
+      "Chain-of-thought prompting",
+      "Knowledge base integration"
+    ],
+    "workflow_summary": "The system retrieves relevant medical guidelines and research from an external database (e.g., KDIGO CKD guidelines), then provides responses using GPT-4 conditioned on the retrieved information."
+  },
+
+  "data": {
+    "datasets_used": [
+      {
+        "name": "KDIGO 2023 CKD Guidelines",
+        "type": "Medical guideline dataset"
+      },
+      {
+        "name": "Peer-reviewed nephrology literature",
+        "type": "Medical research papers"
+      },
+      {
+        "name": "Clinical trial reports and textbooks",
+        "type": "Medical knowledge sources"
+      }
+    ],
+    "preprocessing": "Medical documents and guidelines are integrated into a curated knowledge base used by the retrieval system."
+  },
+
+  "experiments": {
+    "evaluation_type": "Illustrative comparison",
+    "evaluation_metrics": [
+      "Accuracy of medical recommendations",
+      "Alignment with clinical guidelines",
+      "Response specificity"
+    ],
+    "baselines_compared": [
+      "Standard GPT-4 without RAG",
+      "GPT-4 with RAG knowledge base"
+    ],
+    "results_summary": "RAG-enhanced GPT-4 produced responses more aligned with KDIGO clinical guidelines and provided more precise recommendations than the base GPT-4 model."
+  },
+
+  "contributions": [
+    "Provides a comprehensive review of RAG systems in medical AI.",
+    "Demonstrates how RAG can reduce hallucinations in healthcare applications.",
+    "Proposes a framework for building a nephrology-specific RAG knowledge base.",
+    "Shows the advantages of integrating clinical guidelines into LLM responses."
+  ],
+
+  "limitations": [
+    "Mostly conceptual and review-based rather than large-scale empirical evaluation.",
+    "Evaluation limited to demonstration examples.",
+    "Clinical deployment challenges and regulatory concerns remain."
+  ],
+
+  "future_work": [
+    "Deploy RAG-enhanced systems in real clinical settings.",
+    "Integrate RAG with electronic health record (EHR) systems.",
+    "Develop advanced fact-checking systems for medical AI.",
+    "Explore personalized medicine applications using RAG systems."
+  ],
+
+  "outputs": {
+    "code_available": false,
+    "model_available": false,
+    "demo_available": false
+  },
+
+  "complexity": {
+    "training_time": "Not specified",
+    "inference_time": "Dependent on retrieval latency and LLM inference",
+    "computational_cost": "Moderate to high depending on external knowledge base size"
+  },
+
+  "reproducibility": {
+    "clear_methodology": true,
+    "public_dataset": false,
+    "hyperparameters_listed": false
+  },
+
+  "your_analysis": {
+    "relevance_score": 7,
+    "strengths": [
+      "Clear explanation of RAG in healthcare context",
+      "Practical clinical examples",
+      "Strong motivation for reducing hallucinations"
+    ],
+    "weaknesses": [
+      "Limited experimental validation",
+      "Mostly conceptual framework"
+    ],
+    "implementation_difficulty": "medium",
+    "can_we_extend_it": "Yes. Can be extended by integrating domain-specific knowledge graphs, clinical databases, and automated evaluation pipelines."
+  },
+
+  "notes": "This paper is primarily a medical review and conceptual framework illustrating how RAG can be integrated with GPT-4 to support nephrology practice."
 }
 ]
